@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лаборатория морфологии: Н и НН</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#EEF3F7;--bg2:#E4ECF2;--panel:rgba(255,255,255,0.55);--panel-solid:#FFFFFF;
+--bd:rgba(255,255,255,0.7);--bd2:rgba(180,200,215,0.4);--t1:#1A2B35;--t2:#5A6B78;
+--td:#0F1A22;--tm:#8A9BA8;--ac:#2A9DB5;--ac2:#3BA8C7;--acg:rgba(42,157,181,.25);
+--ok:#4CAF7D;--okg:rgba(76,175,125,.35);--no:#E06B67;--nog:rgba(224,107,103,.35);
+--wn:#E8A838;--wng:rgba(232,168,56,.4);--hl:#FFE58F;
+--shadow:0 8px 32px rgba(26,43,53,.08);--glass-blur:blur(20px) saturate(180%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--t1);padding:16px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,rgba(59,168,199,.18) 0%,transparent 45%),radial-gradient(circle at 85% 75%,rgba(232,168,56,.12) 0%,transparent 45%),radial-gradient(circle at 50% 50%,rgba(76,175,125,.08) 0%,transparent 50%);pointer-events:none;z-index:0}
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95),rgba(59,168,199,.12));box-shadow:inset 0 0 10px rgba(255,255,255,.7),0 0 20px rgba(59,168,199,.1);animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.8}90%{opacity:.8}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+.wrap{max-width:1500px;margin:0 auto;position:relative;z-index:1}
+.header{background:var(--panel);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--bd);border-radius:24px;padding:20px 24px;margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;box-shadow:var(--shadow)}
+.htitle{display:flex;align-items:center;gap:14px;flex:1;min-width:280px}
+.hicon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px var(--acg),inset 0 1px 0 rgba(255,255,255,.4)}
+.hicon svg{width:26px;height:26px;color:#fff}
+.header h1{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--td)}
+.hsub{font-size:13px;color:var(--t2);margin-top:2px;font-weight:500}
+.hacts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--t1);transition:.2s;box-shadow:0 2px 8px rgba(26,43,53,.06),inset 0 1px 0 rgba(255,255,255,.6)}
+.btn svg{width:16px;height:16px;flex-shrink:0}
+.btn:hover{background:rgba(255,255,255,.7);border-color:var(--ac);transform:translateY(-1px);box-shadow:0 6px 16px rgba(26,43,53,.1)}
+.btn:active{transform:translateY(0)}
+.btn.active{background:linear-gradient(135deg,var(--ac),var(--ac2));border-color:var(--ac);color:#fff;box-shadow:0 6px 16px var(--acg),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn-secondary{background:rgba(255,255,255,.4);color:var(--t2);border-color:var(--bd2)}
+.btn-secondary:hover{background:rgba(255,255,255,.6);color:var(--t1)}
+.btn-primary{background:linear-gradient(135deg,var(--ac),var(--ac2));border-color:var(--ac);color:#fff;box-shadow:0 6px 16px var(--acg),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn-primary:hover{background:linear-gradient(135deg,#0891b2,#0e7490);border-color:var(--ac)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none}
+.grid{display:grid;grid-template-columns:340px 1fr 320px;gap:16px}
+@media(max-width:1200px){.grid{grid-template-columns:1fr}}
+.zone{background:var(--panel);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--bd);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.zt{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--ac);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--bd2)}
+.zt svg{width:20px;height:20px;flex-shrink:0}
+.cg{margin-bottom:18px}
+.cg.off{opacity:.4;pointer-events:none;filter:grayscale(.3)}
+.cg.primary{background:linear-gradient(135deg,rgba(42,157,181,.08),rgba(59,168,199,.04));border:1.5px solid rgba(42,157,181,.3);border-radius:14px;padding:14px;margin-bottom:18px}
+.cg.exc-block{background:linear-gradient(135deg,rgba(232,168,56,.08),rgba(232,168,56,.03));border:1.5px dashed rgba(232,168,56,.5);border-radius:14px;padding:14px;margin-top:22px;margin-bottom:18px}
+.cl{display:block;font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.exc-block .cl{color:#B87D20}
+.num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-radius:7px;font-size:11px;margin-right:6px;font-weight:800;box-shadow:0 3px 8px var(--acg),inset 0 1px 0 rgba(255,255,255,.4)}
+.exc-block .num{background:linear-gradient(135deg,var(--wn),#F0BC58);box-shadow:0 3px 8px var(--wng)}
+select{width:100%;padding:11px 36px 11px 14px;border:1px solid var(--bd2);border-radius:14px;font-size:14px;font-family:inherit;background:rgba(255,255,255,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--td);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A6B78' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:.2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+select:hover,select:focus{border-color:var(--ac);outline:none;box-shadow:0 0 0 3px var(--acg),inset 0 1px 0 rgba(255,255,255,.6)}
+select:disabled{cursor:not-allowed;opacity:.6}
+.rg{display:flex;flex-direction:column;gap:7px}
+.ro{display:flex;align-items:center;gap:10px;padding:11px 13px;background:rgba(255,255,255,.5);border:1px solid var(--bd2);border-radius:14px;cursor:pointer;transition:.2s;font-size:13px;color:var(--td);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ro:hover{border-color:var(--ac);background:rgba(255,255,255,.7)}
+.ro input{appearance:none;width:18px;height:18px;border:2px solid var(--bd2);border-radius:50%;cursor:pointer;flex-shrink:0;transition:.2s;position:relative;background:rgba(255,255,255,.6)}
+.ro input:checked{border-color:var(--ac);background:var(--ac);box-shadow:inset 0 0 0 3px #fff}
+.ro.sel{border-color:var(--ac);background:rgba(255,255,255,.8);box-shadow:0 3px 10px var(--acg)}
+.hidden{display:none!important}
+.conv{display:flex;flex-direction:column}
+.fb{background:rgba(255,255,255,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid var(--bd);border-radius:16px;padding:15px 17px;transition:.3s;box-shadow:0 4px 12px rgba(26,43,53,.04),inset 0 1px 0 rgba(255,255,255,.7)}
+.fb.active{border-color:var(--ok);background:linear-gradient(135deg,rgba(76,175,125,.12),rgba(76,175,125,.04));box-shadow:0 6px 18px var(--okg),inset 0 1px 0 rgba(255,255,255,.6)}
+.fb.inactive{border-color:var(--no);background:linear-gradient(135deg,rgba(224,107,103,.1),rgba(224,107,103,.03))}
+.fb.trap{border-color:var(--wn);background:linear-gradient(135deg,rgba(232,168,56,.12),rgba(232,168,56,.04));box-shadow:0 6px 18px var(--wng),inset 0 1px 0 rgba(255,255,255,.6)}
+.fb.idle{border-color:var(--bd2);background:rgba(255,255,255,.4);opacity:.7}
+.fh{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}
+.ft{font-weight:700;font-size:14px;color:var(--td)}
+.fi{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.fi svg{width:17px;height:17px;color:var(--tm)}
+.fi.yes{background:linear-gradient(135deg,var(--ok),#5FC48E);box-shadow:0 0 0 4px var(--okg),inset 0 1px 0 rgba(255,255,255,.4)}
+.fi.no{background:linear-gradient(135deg,var(--no),#E88581);box-shadow:0 0 0 4px var(--nog),inset 0 1px 0 rgba(255,255,255,.4)}
+.fi.trap{background:linear-gradient(135deg,var(--wn),#F0BC58);box-shadow:0 0 0 4px var(--wng),inset 0 1px 0 rgba(255,255,255,.4);animation:pg 2s ease-in-out infinite}
+.fi.yes svg,.fi.no svg,.fi.trap svg{color:#fff}
+@keyframes pg{0%,100%{box-shadow:0 0 0 4px var(--wng),inset 0 1px 0 rgba(255,255,255,.4)}50%{box-shadow:0 0 0 10px var(--wng),inset 0 1px 0 rgba(255,255,255,.4)}}
+.fv{font-size:13px;color:var(--t2);font-family:'JetBrains Mono','Consolas',monospace}
+.fv .hl{background:var(--hl);color:var(--td);padding:2px 6px;border-radius:5px;font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.arw{display:flex;justify-content:center;padding:5px 0;color:var(--tm)}
+.arw svg{width:20px;height:20px}
+.res{margin-top:22px;background:linear-gradient(135deg,rgba(42,157,181,.12),rgba(59,168,199,.06));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid var(--ac);border-radius:20px;padding:22px;text-align:center;box-shadow:0 8px 24px var(--acg),inset 0 1px 0 rgba(255,255,255,.5);position:relative}
+.res-hint{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;cursor:help;transition:.2s}
+.res-hint:hover{background:#fff;transform:scale(1.1)}
+.res-hint svg{width:16px;height:16px;color:var(--ac)}
+.res-hint-tooltip{position:absolute;top:44px;right:12px;background:#fff;border:1px solid var(--bd2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--t2);max-width:240px;box-shadow:0 4px 12px rgba(0,0,0,.1);opacity:0;pointer-events:none;transition:.2s;z-index:10}
+.res-hint:hover + .res-hint-tooltip,.res-hint-tooltip:hover{opacity:1}
+.rl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--ac);margin-bottom:8px}
+.rw{font-family:'JetBrains Mono','Consolas',monospace;font-size:28px;font-weight:700;color:var(--td);margin:10px 0;word-break:break-word;line-height:1.35}
+.rw .nn{color:var(--ac);background:rgba(42,157,181,.18);padding:3px 8px;border-radius:6px;box-shadow:0 2px 6px rgba(42,157,181,.15)}
+.rw .error{color:var(--no);font-size:18px;font-weight:600;text-align:center;display:block;padding:10px 0}
+.rt{font-size:13px;color:var(--t2);font-weight:600}
+.rt strong{color:var(--td)}
+.cb{background:rgba(255,255,255,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--bd);border-left:4px solid var(--ac);padding:15px 17px;border-radius:14px;margin-bottom:14px;font-size:13px;line-height:1.6;box-shadow:0 4px 12px rgba(26,43,53,.05);white-space:pre-wrap}
+.cb.warning{background:rgba(255,255,255,.7);border-left-color:var(--wn)}
+.cb.success{background:rgba(255,255,255,.7);border-left-color:var(--ok)}
+.cbt{display:flex;align-items:center;gap:6px;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;color:var(--ac)}
+.cb.warning .cbt{color:#B87D20}
+.cb.success .cbt{color:var(--ok)}
+.cbt svg{width:15px;height:15px;flex-shrink:0}
+.lv{display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap}
+.lb{padding:7px 11px;border-radius:12px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;display:inline-flex;align-items:center;gap:5px;transition:.2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;position:relative}
+.lb.locked{background:rgba(255,255,255,.4);color:var(--tm);border:1px solid var(--bd2)}
+.lb.current{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;box-shadow:0 6px 16px var(--acg),inset 0 1px 0 rgba(255,255,255,.3)}
+.lb.done{background:linear-gradient(135deg,rgba(76,175,125,.2),rgba(76,175,125,.1));color:var(--ok);border:1px solid rgba(76,175,125,.4)}
+.lb svg{width:13px;height:13px;flex-shrink:0}
+.lb:hover{transform:translateY(-1px)}
+.lb-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--td);color:#fff;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s;z-index:20}
+.lb:hover .lb-tip{opacity:1}
+.pb{margin-bottom:20px;padding:12px;background:rgba(255,255,255,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--bd2);border-radius:12px;font-size:12px;color:var(--t2);position:relative}
+.pt{margin-bottom:7px;font-weight:600}
+.ptr{height:7px;background:rgba(180,200,215,.3);border-radius:4px;overflow:hidden}
+.ptf{height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));width:0;transition:width .4s;border-radius:4px;box-shadow:0 0 8px var(--acg)}
+.pb-tip{position:absolute;top:calc(100% + 8px);left:12px;right:12px;background:var(--td);color:#fff;padding:6px 10px;border-radius:8px;font-size:11px;font-weight:500;opacity:0;pointer-events:none;transition:.2s;z-index:20}
+.pb:hover .pb-tip{opacity:1}
+.oly{border:1.5px dashed var(--wn);border-radius:16px;padding:14px;margin-bottom:18px;background:rgba(232,168,56,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.oly .cl{color:#B87D20}
+.exc-info{font-size:12px;color:var(--t2);margin-top:6px;font-style:italic}
+.onboarding{position:fixed;inset:0;background:rgba(15,23,42,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.onboarding-card{background:#fff;border-radius:24px;padding:32px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
+.onboarding-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.onboarding-close:hover{background:var(--bd2)}
+.onboarding-close svg{width:18px;height:18px;color:var(--t2)}
+.onboarding h2{font-size:22px;font-weight:800;color:var(--td);margin-bottom:8px;letter-spacing:-.02em}
+.onboarding .onb-sub{font-size:14px;color:var(--t2);margin-bottom:24px}
+.onboarding-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.onboarding-step{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--bg);border-radius:12px;border:1px solid var(--bd2)}
+.onboarding-step-num{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.onboarding-step-text{font-size:14px;color:var(--td);line-height:1.5}
+.onboarding-step-text strong{color:var(--ac)}
+.onboarding-actions{display:flex;gap:10px;flex-wrap:wrap}
+.onboarding-actions .btn{flex:1;justify-content:center;padding:13px 18px;font-size:15px}
+@media(max-width:640px){body{padding:10px}.header{padding:16px}.header h1{font-size:18px}.hacts{width:100%}.hacts .btn{flex:1;justify-content:center}.zone{padding:18px}.rw{font-size:22px}.ft{font-size:13px}.fi{width:30px;height:30px}.onboarding-card{padding:22px}.onboarding h2{font-size:19px}}
+@media(max-width:390px){.htitle{width:100%}.lb{font-size:10px;padding:6px 9px}.ro{font-size:12px;padding:9px 11px}.header h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bubbles"></div>
+<div class="onboarding" id="onboarding">
+ <div class="onboarding-card">
+  <button class="onboarding-close" id="onbClose" aria-label="Закрыть">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <h2>🔬 Лаборатория морфологии</h2>
+  <div class="onb-sub">Научись различать Н и НН в причастиях и отглагольных прилагательных за 3 шага</div>
+  <div class="onboarding-steps">
+   <div class="onboarding-step">
+    <div class="onboarding-step-num">1</div>
+    <div class="onboarding-step-text">Выбери <strong>глагол</strong> в первом поле пульта управления</div>
+   </div>
+   <div class="onboarding-step">
+    <div class="onboarding-step-num">2</div>
+    <div class="onboarding-step-text">Меняй параметры (вид, приставку, зависимое слово) — смотри, как меняется слово в центре</div>
+   </div>
+   <div class="onboarding-step">
+    <div class="onboarding-step-num">3</div>
+    <div class="onboarding-step-text">Собери <strong>5 разных слов</strong> на базовом уровне, чтобы открыть продвинутый</div>
+   </div>
+  </div>
+  <div class="onboarding-actions">
+   <button class="btn btn-primary" id="onbStart"><span>Начать эксперимент</span></button>
+  </div>
+ </div>
+</div>
+<div class="wrap">
+<header class="header">
+<div class="htitle">
+<div class="hicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4H9z"/><path d="M7 7h10l-1 13H8z"/><path d="M10 11v5"/><path d="M14 11v5"/></svg></div>
+<div><h1>Лаборатория морфологии</h1><div class="hsub">Н и НН в причастиях и отглагольных прилагательных</div></div>
+</div>
+<div class="hacts">
+<button class="btn" id="btnComments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Комментарии: ВКЛ</span></button>
+<button class="btn btn-secondary" id="btnReset"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg><span>Сброс</span></button>
+</div>
+</header>
+<div class="grid">
+<section class="zone">
+<div class="zt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Пульт управления</span></div>
+<div class="lv">
+<div class="lb current" id="lv1" onclick="switchLevel(1)"><span class="lb-tip">Базовый: вид + приставка. Нужно 5 разных слов</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Базовый</span></div>
+<div class="lb locked" id="lv2" onclick="switchLevel(2)"><span class="lb-tip">Продвинутый: все фильтры + исключения. Нужно 8 слов</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Продвинутый</span></div>
+<div class="lb locked" id="lv3" onclick="switchLevel(3)"><span class="lb-tip">Олимпиадный: слова-двойники и сложные случаи</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Олимпиадный</span></div>
+</div>
+<div class="pb">
+ <div class="pt" id="progText">Собери 5 разных слов, чтобы открыть продвинутый уровень</div>
+ <div class="ptr"><div class="ptf" id="progFill"></div></div>
+ <div class="pb-tip">Каждое новое слово = +1 к прогрессу. Повторы не считаются.</div>
+</div>
+<div class="oly hidden" id="olyBlock">
+<label class="cl">Олимпиадный блок: слова-двойники</label>
+<select id="pairSelect"><option value="">— выберите пару —</option></select>
+<div class="rg" style="margin-top:8px">
+<label class="ro sel"><input type="radio" name="pairSide" value="a" checked><span id="pairLabelA">Значение 1</span></label>
+<label class="ro"><input type="radio" name="pairSide" value="b"><span id="pairLabelB">Значение 2</span></label>
+</div>
+</div>
+<div class="cg primary" id="cgVerb"><label class="cl"><span class="num">1</span>Базовый глагол</label>
+<select id="verbSelect"><option value="">↓ Выбери глагол для начала</option></select></div>
+<div class="cg" id="cgAspect"><label class="cl"><span class="num">2</span>Вид глагола</label>
+<div class="rg">
+<label class="ro sel"><input type="radio" name="aspect" value="imp" checked><span>НСВ (что делать?)</span></label>
+<label class="ro"><input type="radio" name="aspect" value="perf"><span>СВ (что сделать?)</span></label>
+</div></div>
+<div class="cg" id="cgNe"><label class="cl"><span class="num">3</span>Приставка НЕ-</label>
+<div class="rg">
+<label class="ro"><input type="checkbox" id="nePrefix"><span>Добавить приставку НЕ-</span></label>
+</div></div>
+<div class="cg" id="cgPrefix"><label class="cl"><span class="num">4</span>Основная приставка</label>
+<select id="prefixSelect"><option value="none">Без приставки</option></select></div>
+<div class="cg" id="cgDep"><label class="cl"><span class="num">5</span>Зависимое слово</label>
+<select id="depSelect"><option value="none">Нет зависимого слова</option></select></div>
+<div class="cg exc-block" id="cgExc">
+ <label class="cl"><span class="num">⚠</span>Слова-исключения (не по правилу)</label>
+ <div class="rg">
+  <label class="ro sel"><input type="radio" name="excOn" value="no" checked><span>Обычный режим</span></label>
+  <label class="ro"><input type="radio" name="excOn" value="yes"><span>Включить исключения</span></label>
+ </div>
+ <select id="excSelect" class="hidden" style="margin-top:8px"><option value="">— выберите исключение —</option></select>
+ <div class="exc-info" id="excInfo"></div>
+</div>
+</section>
+<section class="zone">
+<div class="zt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Конвейер алгоритма</span></div>
+<div class="conv">
+<div class="fb" id="f1"><div class="fh"><div class="ft">Шаг 1. Глагол совершенного вида?</div><div class="fi" id="i1"></div></div><div class="fv" id="v1">Ожидание ввода...</div></div>
+<div class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+<div class="fb" id="f2"><div class="fh"><div class="ft">Шаг 2. Есть приставка (кроме НЕ-)?</div><div class="fi" id="i2"></div></div><div class="fv" id="v2">Ожидание ввода...</div></div>
+<div class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+<div class="fb" id="f3"><div class="fh"><div class="ft">Шаг 3. Есть -ОВА-/-ЕВА-/-ИРОВА-?</div><div class="fi" id="i3"></div></div><div class="fv" id="v3">Ожидание ввода...</div></div>
+<div class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+<div class="fb" id="f4"><div class="fh"><div class="ft">Шаг 4. Есть зависимое слово?</div><div class="fi" id="i4"></div></div><div class="fv" id="v4">Ожидание ввода...</div></div>
+</div>
+<div class="res">
+ <div class="res-hint" id="resHint">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+ </div>
+ <div class="res-hint-tooltip">Подсветка показывает только суффикс (-н- или -нн-). Приставка НЕ- и другие буквы «н» в слове не подсвечиваются.</div>
+ <div class="rl">Результат эксперимента</div>
+ <div class="rw" id="resWord">—</div>
+ <div class="rt" id="resType">Выбери глагол в поле 1, чтобы начать</div>
+</div>
+</section>
+<section class="zone">
+<div class="zt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>Комментарии учителя</span></div>
+<div class="cb" id="cbox"><div class="cbt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="cTitle">Комментарий</span></div><div id="cText">Выбери глагол и меняй параметры — увидишь, как работает алгоритм.</div></div>
+</section>
+</div>
+</div>
+
+<script>
+var VERBS = {
+ 'вязать':{s:'вяз',n:'ан',nn:'анн',p:['за','с'],deps:['бабушкой','мастером','вручную'],d:'за',basic:true},
+ 'жарить':{s:'жар',n:'ен',nn:'енн',p:['за','под'],deps:['на сковороде','с грибами','в духовке','на масле'],d:'за',basic:true},
+ 'красить':{s:'краш',n:'ен',nn:'енн',p:['вы','о'],deps:['суриком','краской','в синий цвет','недавно'],d:'вы',basic:true},
+ 'грузить':{s:'груж',n:'ён',nn:'енн',p:['на','по'],deps:['мебелью','товарами','на машину','в вагон'],d:'на',basic:true},
+ 'ткать':{s:'тка',n:'н',nn:'нн',p:['со','вы'],deps:['золотом','шёлком','мастером','вручную'],d:'со',basic:true},
+ 'вялить':{s:'вял',n:'ен',nn:'енн',p:['под','за'],deps:['на солнце','в тени','долго'],d:'под'},
+ 'штопать':{s:'штоп',n:'ан',nn:'анн',p:['за','пере'],deps:['матерью','иглой','аккуратно'],d:'за'},
+ 'сушить':{s:'суш',n:'ён',nn:'енн',p:['вы','за'],deps:['на солнце','в печи','долго'],d:'вы'},
+ 'мостить':{s:'мощ',n:'ён',nn:'енн',p:['вы','за'],deps:['булыжником','плиткой','рабочими'],d:'вы'},
+ 'стричь':{s:'стриж',n:'ен',nn:'енн',p:['под','о'],deps:['мастером','коротко','недавно'],d:'под'},
+ 'чистить':{s:'чищ',n:'ен',nn:'енн',p:['на','вы'],deps:['щёткой','ножом','тщательно'],d:'на'},
+ 'тушить':{s:'туш',n:'ён',nn:'енн',p:['по','за'],deps:['в сметане','с овощами','долго'],d:'по'},
+ 'варить':{s:'вар',n:'ён',nn:'енн',p:['с','за'],deps:['в кастрюле','на пару','долго'],d:'с'},
+ 'крошить':{s:'крош',n:'ен',nn:'енн',p:['рас','на'],deps:['ножом','мелко','аккуратно'],d:'рас'},
+ 'пугать':{s:'пуг',n:'ан',nn:'анн',p:['ис','на'],deps:['громко','неожиданно','постоянно'],d:'ис'},
+ 'править':{s:'правл',n:'ен',nn:'енн',p:['ис','на'],deps:['редактором','тщательно','долго'],d:'ис'},
+ 'бесить':{s:'беш',n:'ен',nn:'енн',p:['вз'],deps:['постоянно','непрерывно','сильно'],d:'вз',noNe:true},
+ 'ковать':{s:'ков',n:'ан',nn:'анн',p:['под','о'],deps:['молотом','кузнецом','искусно'],d:'под',root:true},
+ 'жевать':{s:'жёв',n:'ан',nn:'анн',p:['раз','из'],deps:['тщательно','долго','медленно'],d:'раз',root:true},
+ 'клевать':{s:'клёв',n:'ан',nn:'анн',p:['с','на'],deps:['клювом','быстро','жадно'],d:'с',root:true},
+ 'мариновать':{s:'маринов',n:'анн',nn:'анн',p:['про'],deps:['в уксусе','со специями','долго'],d:'про',ova:true},
+ 'рифмовать':{s:'рифмов',n:'анн',nn:'анн',p:['про'],deps:['искусно','точно','умело'],d:'про',ova:true},
+ 'линовать':{s:'линов',n:'анн',nn:'анн',p:['про'],deps:['линейкой','аккуратно','равномерно'],d:'про',ova:true},
+ 'баловать':{s:'балов',n:'анн',nn:'анн',p:['из'],deps:['постоянно','чрезмерно','без меры'],d:'из',ova:true},
+ 'корчевать':{s:'корчёв',n:'анн',nn:'анн',p:['вы'],deps:['трактором','долго','упорно'],d:'вы',ova:true},
+ 'шлифовать':{s:'шлифов',n:'анн',nn:'анн',p:['от'],deps:['тщательно','до блеска','умело'],d:'от',ova:true},
+ 'асфальтировать':{s:'асфальтиров',n:'анн',nn:'анн',p:['за'],deps:['рабочими','быстро','качественно'],d:'за',ova:true},
+ 'глазировать':{s:'глазиров',n:'анн',nn:'анн',p:['по'],deps:['шоколадом','аккуратно','равномерно'],d:'по',ova:true},
+ 'тренировать':{s:'трениров',n:'анн',nn:'анн',p:['про'],deps:['долго','интенсивно','ежедневно'],d:'про',ova:true},
+ 'гарантировать':{s:'гарантиров',n:'анн',nn:'анн',p:['по'],deps:['письменно','официально','заранее'],d:'по',ova:true}
+};
+var EXC = {
+ 'желанный':{nn:true,verb:'желать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'жела<span class="nn">нн</span>ый'},
+ 'священный':{nn:true,verb:'святить',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'свяще<span class="nn">нн</span>ый'},
+ 'неслыханный':{nn:true,verb:'слышать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'неслыха<span class="nn">нн</span>ый'},
+ 'невиданный':{nn:true,verb:'видать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'невида<span class="nn">нн</span>ый'},
+ 'нежданный':{nn:true,verb:'ждать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'нежда<span class="nn">нн</span>ый'},
+ 'негаданный':{nn:true,verb:'гадать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'негада<span class="nn">нн</span>ый'},
+ 'нечаянный':{nn:true,verb:'чаять',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'нечая<span class="nn">нн</span>ый'},
+ 'недреманный':{nn:true,verb:'дремать',note:'Отглагольное прилагательное-исключение: всегда НН.',display:'недрёма<span class="nn">нн</span>ый'},
+ 'раненый':{nn:false,verb:'ранить',cancel:'раненный',
+  note:'Исключение: пишется Н. С зависимым словом или приставкой исключение перестаёт работать.',
+  display:'ране<span class="nn">н</span>ый',
+  allowPrefix:true,allowDep:true,
+  prefixForms:{'из':'израненный','по':'пораненный'},
+  deps:['в ногу','в руку','в плечо','в голову','в бок','в спину','в грудь','в сердце','в пятку','в палец','в лицо','в глаз','в ухо','в шею','в колено','в локоть','в кисть','в бедро','в голень','в лодыжку','в стопу','в живот']},
+ 'контуженый':{nn:false,verb:'контузить',cancel:'контуженный',
+  note:'Исключение: пишется Н. С зависимым словом исключение перестаёт работать.',
+  display:'контуже<span class="nn">н</span>ый',
+  allowDep:true,
+  deps:['в голову','в руку','в ногу','в спину','в грудь','в плечо','в бок','в лицо','в глаз','в ухо','в шею','в колено','в локоть','в кисть','в бедро','в голень','в лодыжку','в стопу','в живот','в пятку','в палец']},
+ 'смышлёный':{nn:false,verb:'смыслить',note:'Исключение: смышлёный ребёнок — пишется Н.',display:'смышлё<span class="nn">н</span>ый'},
+ 'приданое':{nn:false,verb:'придать',note:'Исключение: приданое — пишется Н.',display:'прида<span class="nn">н</span>ое',
+  details:'ПРИДА́НОЕ, -ого; ср.\n\n1. Имущество, деньги, даваемые невесте родителями или родственниками при вступлении её в брак. Получить в п. машину. Дать в п. пять тысяч рублей. Небольшое п. За невестой дают богатое п. Невеста с приданым, без приданого.\n\n2. Комплект белья для новорождённого. Купить п. Детское п. Шить п. для ребёнка.\n\nСравнить: при́данный — страдательное причастие прошедшего времени (приданные силы).'},
+ 'конченый':{nn:false,verb:'кончить',other:'конченный разговор',note:'Исключение в значении «конченый человек» — Н.',display:'конче<span class="nn">н</span>ый'},
+ 'названый':{nn:false,verb:'назвать',other:'названный роман',note:'Исключение в значении «приёмный»: названый брат — Н.',display:'назва<span class="nn">н</span>ый'},
+ 'посажёный':{nn:false,verb:'посадить',other:'посаженный картофель',note:'Исключение в свадебном значении: посажёный отец — Н.',display:'посажё<span class="nn">н</span>ый'}
+};
+var PAIRS = [
+ {a:'посажёный отец',b:'посаженный картофель',ea:'Устойчивое значение «заменяющий родителя при свадебном обряде» — слово-исключение, Н.',eb:'Причастие от глагола совершенного вида посадить, есть приставка по- — НН.'},
+ {a:'названый брат',b:'названный роман',ea:'Устаревшее значение «неродной, приёмный» — слово-исключение, Н.',eb:'Причастие от глагола совершенного вида назвать, есть приставка на- — НН.'},
+ {a:'считаные дни',b:'считанные данные',ea:'Значение «очень немногие» — отглагольное прилагательное, Н.',eb:'Причастие от глагола совершенного вида считать — НН.'},
+ {a:'конченый человек',b:'конченный разговор',ea:'Устойчивое значение — слово-исключение, Н.',eb:'Причастие от глагола совершенного вида кончить — НН.'},
+ {a:'гладкокрашеный',b:'гладкоокрашенный',ea:'Вторая часть от глагола НСВ красить, приставки нет — Н.',eb:'Вторая часть от глагола СВ окрасить, есть приставка о- — НН.'},
+ {a:'свежемороженый',b:'свежезамороженный',ea:'Вторая часть от глагола НСВ морозить, приставки нет — Н.',eb:'Вторая часть от глагола СВ заморозить, есть приставка за- — НН.'}
+];
+var S = {verb:'',aspect:'imp',nePrefix:false,prefix:'none',dep:'none',excOn:'no',exc:'',pair:'',side:'a',comments:true,level:1,seen:{1:{},2:{}},onboarded:false};
+function el(id){return document.getElementById(id);}
+function icon(t){
+ if(t==='check')return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+ if(t==='cross')return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+ if(t==='warn')return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+ if(t==='lock')return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+}
+function initBubbles(){
+ var c=el('bubbles');
+ for(var i=0;i<18;i++){
+  var b=document.createElement('div');
+  b.className='bubble';
+  var size=10+Math.random()*28;
+  b.style.width=size+'px';b.style.height=size+'px';
+  b.style.left=Math.random()*100+'%';
+  b.style.animationDuration=(18+Math.random()*22)+'s';
+  b.style.animationDelay=Math.random()*12+'s';
+  c.appendChild(b);
+ }
+}
+function hideOnboarding(){
+ if(S.onboarded) return;
+ S.onboarded = true;
+ el('onboarding').style.display = 'none';
+}
+function init(){initBubbles();fillVerbs();fillExc();fillPairs();bind();idleFilters();drawLevels();applyLevel();}
+function fillVerbs(){
+ var s=el('verbSelect');
+ s.innerHTML='<option value="">↓ Выбери глагол для начала</option>';
+ for(var k in VERBS){
+  if(S.level===1 && !VERBS[k].basic) continue;
+  var o=document.createElement('option'); o.value=k; o.textContent=k; s.appendChild(o);
+ }
+ s.value=S.verb;
+}
+function fillDep(){
+ var s=el('depSelect');
+ s.innerHTML='<option value="none">Нет зависимого слова</option>';
+ var deps = null;
+ if(S.excOn==='yes' && S.exc && EXC[S.exc] && EXC[S.exc].deps){
+  deps = EXC[S.exc].deps;
+ } else if(S.verb && VERBS[S.verb].deps){
+  deps = VERBS[S.verb].deps;
+ }
+ if(deps){
+  deps.forEach(function(d){var o=document.createElement('option');o.value=d;o.textContent=d;s.appendChild(o);});
+ }
+ s.value=S.dep;
+}
+function fillExc(){
+ var s=el('excSelect');
+ s.innerHTML='<option value="">— выберите исключение —</option>';
+ for(var k in EXC){var o=document.createElement('option');o.value=k;o.textContent=k;s.appendChild(o);}
+ s.value=S.exc;
+}
+function fillPairs(){
+ var s=el('pairSelect');
+ s.innerHTML='<option value="">— выберите пару —</option>';
+ for(var i=0;i<PAIRS.length;i++){var o=document.createElement('option');o.value=String(i);o.textContent=PAIRS[i].a+' / '+PAIRS[i].b;s.appendChild(o);}
+}
+function fillPrefixes(){
+ var s=el('prefixSelect');
+ s.innerHTML='<option value="none">Без приставки</option>';
+ var prefixes = null;
+ if(S.excOn==='yes' && S.exc && EXC[S.exc] && EXC[S.exc].allowPrefix && EXC[S.exc].prefixForms){
+  prefixes = Object.keys(EXC[S.exc].prefixForms);
+ } else if(S.verb){
+  prefixes = VERBS[S.verb].p;
+ }
+ if(prefixes){
+  for(var i=0;i<prefixes.length;i++){var o=document.createElement('option');o.value=prefixes[i];o.textContent=prefixes[i]+'-';s.appendChild(o);}
+ }
+ s.value=S.prefix;
+ if(s.value!==S.prefix){S.prefix='none';s.value='none';}
+}
+function switchLevel(lvl){
+ if(lvl>S.level){
+  comment('warning','Сначала собери '+(S.level===1?5:8)+' разных слов на уровне «'+['','Базовый','Продвинутый','Олимпиадный'][S.level]+'», чтобы открыть следующий.');
+  return;
+ }
+ S.level=lvl;
+ fillVerbs();applyLevel();drawLevels();
+ comment('info','Переключено на уровень: '+['','Базовый','Продвинутый','Олимпиадный'][lvl]);
+}
+function bind(){
+ el('onbClose').onclick = hideOnboarding;
+ el('onbStart').onclick = hideOnboarding;
+ el('verbSelect').onchange=function(){
+  hideOnboarding();
+  S.verb=this.value;
+  S.aspect='imp';S.nePrefix=false;S.prefix='none';S.dep='none';S.excOn='no';S.exc='';
+  el('nePrefix').checked=false;
+  syncAspect();fillPrefixes();fillDep();
+  el('excSelect').value='';el('excSelect').classList.add('hidden');el('excInfo').textContent='';
+  var e=document.getElementsByName('excOn');e[0].checked=true;
+  paintRadio();updateExcDisabled();run();
+ };
+ var a=document.getElementsByName('aspect');
+ for(var i=0;i<a.length;i++)a[i].onchange=function(){
+  hideOnboarding();
+  S.aspect=this.value;
+  if(S.verb){
+   if(S.aspect==='perf'&&(S.prefix==='none'))S.prefix=VERBS[S.verb].d;
+   if(S.aspect==='imp')S.prefix='none';
+   fillPrefixes();
+  }
+  paintRadio();run();
+ };
+ el('nePrefix').onchange=function(){
+  hideOnboarding();
+  S.nePrefix=this.checked;run();
+ };
+ el('prefixSelect').onchange=function(){
+  hideOnboarding();
+  S.prefix=this.value;
+  if(S.prefix!=='none')S.aspect='perf';
+  if(S.prefix==='none'&&S.nePrefix)S.aspect='imp';
+  syncAspect();paintRadio();run();
+ };
+ el('depSelect').onchange=function(){
+  hideOnboarding();
+  S.dep=this.value;run();
+ };
+ var ex=document.getElementsByName('excOn');
+ for(var m=0;m<ex.length;m++)ex[m].onchange=function(){
+  hideOnboarding();
+  S.excOn=this.value;
+  el('excSelect').classList.toggle('hidden',S.excOn!=='yes');
+  if(S.excOn==='no'){S.exc='';el('excSelect').value='';el('excInfo').textContent='';}
+  paintRadio();fillDep();fillPrefixes();updateExcDisabled();run();
+ };
+ el('excSelect').onchange=function(){
+  hideOnboarding();
+  S.exc=this.value;
+  if(S.exc && EXC[S.exc]){
+   el('excInfo').textContent='От глагола: '+EXC[S.exc].verb;
+  } else {
+   el('excInfo').textContent='';
+  }
+  fillDep();fillPrefixes();
+  updateExcDisabled();
+  run();
+ };
+ el('pairSelect').onchange=function(){
+  hideOnboarding();
+  S.pair=this.value;
+  updateOlympiadDisabled();
+  run();
+ };
+ var ps=document.getElementsByName('pairSide');
+ for(var q=0;q<ps.length;q++)ps[q].onchange=function(){
+  hideOnboarding();
+  S.side=this.value;paintRadio();run();
+ };
+ el('btnComments').onclick=function(){
+  S.comments=!S.comments;
+  this.querySelector('span').textContent=S.comments?'Комментарии: ВКЛ':'Комментарии: ВЫКЛ';
+  this.classList.toggle('active',S.comments);
+  el('cbox').classList.toggle('hidden',!S.comments);
+ };
+ el('btnReset').onclick=reset;
+}
+function updateExcDisabled(){
+ var excDisabled = (S.excOn === 'yes');
+ var excData = excDisabled && S.exc ? EXC[S.exc] : null;
+ var allowPrefix = excData && excData.allowPrefix;
+ var allowDep = excData && excData.allowDep;
+ 
+ el('cgVerb').classList.toggle('off', excDisabled);
+ el('cgAspect').classList.toggle('off', excDisabled);
+ el('cgNe').classList.toggle('off', excDisabled && !allowPrefix);
+ el('cgPrefix').classList.toggle('off', excDisabled && !allowPrefix);
+ el('cgDep').classList.toggle('off', excDisabled && !allowDep);
+ 
+ document.querySelectorAll('#cgVerb select').forEach(function(el){ el.disabled = excDisabled; });
+ document.querySelectorAll('#cgAspect input').forEach(function(el){ el.disabled = excDisabled; });
+ document.querySelectorAll('#cgNe input').forEach(function(el){ el.disabled = excDisabled && !allowPrefix; });
+ document.querySelectorAll('#cgPrefix select').forEach(function(el){ el.disabled = excDisabled && !allowPrefix; });
+ document.querySelectorAll('#cgDep select').forEach(function(el){ el.disabled = excDisabled && !allowDep; });
+}
+function updateOlympiadDisabled(){
+ var disabled = (S.pair !== '');
+ el('cgVerb').classList.toggle('off', disabled);
+ el('cgAspect').classList.toggle('off', disabled);
+ el('cgNe').classList.toggle('off', disabled);
+ el('cgPrefix').classList.toggle('off', disabled);
+ el('cgDep').classList.toggle('off', disabled);
+ el('cgExc').classList.toggle('off', disabled);
+ var inputs = document.querySelectorAll('#cgVerb select, #cgAspect input, #cgNe input, #cgPrefix select, #cgDep select, #cgExc input, #cgExc select');
+ inputs.forEach(function(el){ el.disabled = disabled; });
+ if (!disabled) {
+  S.excOn = 'no'; S.exc = '';
+  el('excSelect').value = '';
+  el('excSelect').classList.add('hidden');
+  el('excInfo').textContent = '';
+  var e = document.getElementsByName('excOn');
+  if (e[0]) e[0].checked = true;
+  paintRadio();
+ }
+}
+function syncAspect(){
+ var a=document.getElementsByName('aspect');
+ for(var i=0;i<a.length;i++)a[i].checked=(a[i].value===S.aspect);
+}
+function paintRadio(){
+ var r=document.querySelectorAll('.ro');
+ for(var i=0;i<r.length;i++){var inp=r[i].querySelector('input');if(inp.type==='radio')r[i].classList.toggle('sel',inp.checked);}
+}
+function idleFilters(){
+ for(var i=1;i<=4;i++){el('f'+i).className='fb';el('i'+i).className='fi';el('i'+i).innerHTML=icon('info');el('v'+i).textContent='Ожидание ввода...';}
+}
+function setFilter(n,state,text){
+ el('f'+n).className='fb '+state.cls;
+ el('i'+n).className='fi '+state.ind;
+ el('i'+n).innerHTML=icon(state.ico);
+ el('v'+n).innerHTML=text;
+}
+var ST={yes:{cls:'active',ind:'yes',ico:'check'},no:{cls:'inactive',ind:'no',ico:'cross'},trap:{cls:'trap',ind:'trap',ico:'warn'},idle:{cls:'idle',ind:'',ico:'info'}};
+function comment(type,text){
+ if(!S.comments)return;
+ var b=el('cbox');b.classList.remove('warning','success');
+ if(type==='warning')b.classList.add('warning');
+ if(type==='success')b.classList.add('success');
+ el('cTitle').textContent=type==='warning'?'Внимание: ловушка':(type==='success'?'Результат':'Комментарий');
+ el('cText').textContent=text;
+}
+function showResult(html,type){
+ el('resType').innerHTML='<strong>'+type+'</strong>';
+ el('resWord').innerHTML=html;
+}
+function countProgress(key){
+ if(S.level===3)return;
+ S.seen[S.level][key]=1;
+ var n=Object.keys(S.seen[S.level]).length;
+ var need=S.level===1?5:8;
+ if(n>=need){
+  S.level++;
+  fillVerbs();applyLevel();
+  comment('success',S.level===2?'🎉 Базовый уровень пройден! Открыт продвинутый: доступны зависимые слова и исключения.':'🏆 Продвинутый уровень пройден! Открыт олимпиадный блок: слова-двойники и сложные слова.');
+ }
+ drawLevels();
+}
+function drawLevels(){
+ var names=['Базовый','Продвинутый','Олимпиадный'];
+ for(var i=1;i<=3;i++){
+  var e=el('lv'+i);
+  if(i<S.level){e.className='lb done';e.innerHTML='<span class="lb-tip">Пройден — можно вернуться</span>'+icon('check')+' '+names[i-1];}
+  else if(i===S.level){e.className='lb current';e.innerHTML='<span class="lb-tip">'+(i===1?'Собери 5 разных слов':i===2?'Собери 8 разных слов':'Слова-двойники и сложные случаи')+'</span>'+icon('check')+' '+names[i-1];}
+  else{e.className='lb locked';e.innerHTML='<span class="lb-tip">'+(i===2?'Нужно 5 слов на базовом':'Нужно 8 слов на продвинутом')+'</span>'+icon('lock')+' '+names[i-1];}
+ }
+ var n=Object.keys(S.seen[S.level]||{}).length;
+ if(S.level===1){el('progText').textContent='Собрано разных слов: '+n+' из 5 — откроется продвинутый';el('progFill').style.width=Math.min(100,n/5*100)+'%';}
+ else if(S.level===2){el('progText').textContent='Собрано разных слов: '+n+' из 8 — откроется олимпиадный';el('progFill').style.width=Math.min(100,n/8*100)+'%';}
+ else{el('progText').textContent='Все уровни открыты!';el('progFill').style.width='100%';}
+}
+function applyLevel(){
+ var basic=S.level===1;
+ el('excSelect').disabled=basic;
+ var ex=document.getElementsByName('excOn');for(var j=0;j<ex.length;j++)ex[j].disabled=basic;
+ el('olyBlock').classList.toggle('hidden',S.level<3);
+ if(basic){S.dep='none';S.excOn='no';S.exc='';el('depSelect').value='none';el('excSelect').value='';el('excSelect').classList.add('hidden');el('excInfo').textContent='';
+  var e=document.getElementsByName('excOn');e[0].checked=true;paintRadio();}
+ updateExcDisabled();
+}
+function run(){
+ if(S.level===3&&S.pair!==''){pairMode();return;}
+ if(!S.verb){idleFilters();el('resWord').innerHTML='—';el('resType').innerHTML='Выбери глагол в поле 1, чтобы начать';return;}
+ if(S.excOn==='yes'&&S.exc){exceptionMode();return;}
+ var v=VERBS[S.verb];
+ var f1=(S.aspect==='perf');
+ var hasNe=S.nePrefix;
+ var f2=(S.prefix!=='none');
+ var f3=false,rootTrap=false,ovaAuto=false;
+ if(v.ova){ovaAuto=true;f3=true;}
+ else if(v.root){rootTrap=true;}
+ var f4=(S.dep!=='none');
+ var nn=f1||f2||f3||f4;
+ setFilter(1,f1?ST.yes:ST.no,f1?'ДА: глагол совершенного вида':'НЕТ: глагол несовершенного вида');
+ if(f2)setFilter(2,ST.yes,'ДА: приставка '+S.prefix+'-');
+ else setFilter(2,ST.no,'НЕТ: основной приставки нет');
+ if(rootTrap)setFilter(3,ST.trap,'НЕТ: <span class="hl">-ОВ-/-ЕВ-</span> входит в корень');
+ else if(ovaAuto)setFilter(3,ST.yes,'ДА: глагол на -ОВА-/-ЕВА-/-ИРОВА- всегда даёт НН');
+ else setFilter(3,ST.no,'НЕТ: суффикса нет');
+ setFilter(4,f4?ST.yes:ST.no,f4?'ДА: зависимое слово «'+S.dep+'»':'НЕТ: зависимого слова нет');
+ 
+ var suffix = nn ? v.nn : v.n;
+ var suffixHtml = suffix.replace(/нн/g, '<span class="nn">нн</span>');
+ if (suffixHtml === suffix) {
+  suffixHtml = suffix.replace(/н/g, '<span class="nn">н</span>');
+ }
+ var wordHtml = v.s + suffixHtml + 'ый';
+ var fullDisplayHtml = wordHtml;
+ 
+ if(hasNe && f2){
+  if(f4){fullDisplayHtml = 'не ' + S.prefix + wordHtml;}
+  else{fullDisplayHtml = 'не' + S.prefix + wordHtml;}
+ } else if(hasNe){
+  if(f4){fullDisplayHtml = 'не ' + wordHtml;}
+  else{fullDisplayHtml = 'не' + wordHtml;}
+ } else if(f2){
+  fullDisplayHtml = S.prefix + wordHtml;
+ }
+ 
+ if(f4) fullDisplayHtml += ' ' + S.dep;
+ 
+ var type=nn?'Причастие, 2 НН':'Отглагольное прилагательное, 1 Н';
+ showResult(fullDisplayHtml,type);
+ 
+ var msg,mt;
+ if(hasNe&&f2&&f4){msg='Две приставки: НЕ- и '+S.prefix+'-. НЕ- не даёт НН, но '+S.prefix+'- даёт. С зависимым словом НЕ- пишется раздельно. → 2 НН.';mt='success';}
+ else if(hasNe&&f2&&!f4){msg='Две приставки: НЕ- и '+S.prefix+'-. НЕ- не влияет, но '+S.prefix+'- даёт НН. Без зависимого слова НЕ- пишется слитно. → 2 НН.';mt='success';}
+ else if(hasNe&&!f2&&f4){msg='Приставка НЕ- не даёт НН. Но есть зависимое слово → НН. С зависимым словом НЕ- пишется раздельно. → 2 НН.';mt='success';}
+ else if(hasNe&&!f2&&!nn){msg='Приставка НЕ- не влияет на написание. Без других признаков → 1 Н, пишется слитно.';mt='warning';}
+ else if(ovaAuto){msg='Глагол оканчивается на -ОВА-/-ЕВА-/-ИРОВА-. Такие слова всегда пишутся с НН.';mt='success';}
+ else if(rootTrap){msg='В слове '+S.verb+' -ОВ-/-ЕВ- входит в корень, а не в суффикс. Фильтр 3 не срабатывает.';mt='warning';}
+ else if(nn){var r=[];if(f1)r.push('глагол совершенного вида');if(f2)r.push('приставка '+S.prefix+'-');if(f4)r.push('зависимое слово «'+S.dep+'»');msg='Слово стало причастием: '+r.join(', ')+'. → 2 НН.';mt='success';}
+ else {msg='Глагол несовершенного вида, нет приставки и зависимого слова. Работает общее правило → 1 Н.';mt='success';}
+ comment(mt,msg);countProgress(S.verb+'|'+fullDisplayHtml.replace(/<[^>]+>/g,''));
+}
+function exceptionMode(){
+ var e=EXC[S.exc];
+ var type,msg,mt='info';
+ for(var i=1;i<=4;i++)setFilter(i,ST.idle,'Конвейер остановлен: слово-исключение');
+ 
+ var hasPrefix = S.prefix !== 'none';
+ var hasDep = S.dep !== 'none';
+ var prefixForm = hasPrefix && e.prefixForms && e.prefixForms[S.prefix] ? e.prefixForms[S.prefix] : null;
+ 
+ var baseWord = null;
+ if (prefixForm) {
+  baseWord = prefixForm;
+ } else if (hasDep && e.cancel) {
+  baseWord = e.cancel;
+ }
+ 
+ var baseWordHtml;
+ if (baseWord) {
+  baseWordHtml = baseWord.replace(/нн/g, '<span class="nn">нн</span>');
+  if (baseWordHtml === baseWord) {
+   baseWordHtml = baseWord.replace(/н/g, '<span class="nn">н</span>');
+  }
+ } else {
+  baseWordHtml = e.display;
+ }
+ 
+ if (S.nePrefix) {
+  if (hasDep) {
+   baseWordHtml = 'не ' + baseWordHtml;
+  } else {
+   baseWordHtml = 'не' + baseWordHtml;
+  }
+ }
+ 
+ if (hasDep) {
+  baseWordHtml += ' ' + S.dep;
+ }
+ 
+ if (prefixForm) {
+  type = 'Причастие, 2 НН';
+  setFilter(2, ST.yes, 'ДА: приставка ' + S.prefix + '-');
+  msg = 'С приставкой ' + S.prefix + '- исключение «' + S.exc + '» перестаёт действовать → 2 НН. Получается: ' + prefixForm + '.';
+  if (hasDep) {
+   msg += ' Зависимое слово «' + S.dep + '» добавлено.';
+  }
+  if (S.nePrefix) {
+   msg += ' НЕ- пишется ' + (hasDep ? 'раздельно' : 'слитно') + '.';
+  }
+  mt = 'warning';
+ } else if (hasDep && e.cancel) {
+  type = 'Причастие, 2 НН';
+  setFilter(4, ST.yes, 'ДА: зависимое слово «' + S.dep + '»');
+  msg = 'Появилось зависимое слово. Исключение «' + S.exc + '» перестаёт действовать → 2 НН.';
+  if (S.nePrefix) {
+   msg += ' НЕ- пишется раздельно (есть зависимое слово).';
+  }
+  mt = 'warning';
+ } else if (hasDep && e.other) {
+  type = 'Отглагольное прилагательное, 1 Н';
+  msg = e.note + ' Форма с НН («' + e.other + '») — другое слово с другим значением. Сравните их в олимпиадном блоке.';
+  mt = 'warning';
+ } else {
+  type = e.nn ? 'Причастие, 2 НН' : 'Отглагольное прилагательное, 1 Н';
+  msg = 'Слово «' + S.exc + '» — исключение (от глагола ' + e.verb + '). ' + e.note;
+  if (e.details) {
+   msg += '\n\n' + e.details;
+  }
+ }
+ 
+ showResult(baseWordHtml, type);
+ comment(mt, msg);
+ countProgress('exc|' + S.exc + (hasPrefix ? '|' + S.prefix : '') + (hasDep ? '|' + S.dep : ''));
+}
+function pairMode(){
+ var p=PAIRS[parseInt(S.pair,10)];
+ var word=S.side==='a'?p.a:p.b;
+ var msg=S.side==='a'?p.ea:p.eb;
+ var nn=/нн/.test(word);
+ var wordHtml=word.replace(/нн/g,'<span class="nn">нн</span>').replace(/н(?!н)/g,'<span class="nn">н</span>');
+ for(var i=1;i<=4;i++)setFilter(i,ST.idle,'Олимпиадный режим: решает лексическое значение');
+ showResult(wordHtml,nn?'2 НН':'1 Н');
+ comment(nn?'success':'info',msg);
+}
+function reset(){
+ S.verb='';S.aspect='imp';S.nePrefix=false;S.prefix='none';S.dep='none';S.excOn='no';S.exc='';S.pair='';S.side='a';
+ el('verbSelect').value='';el('depSelect').value='none';el('excSelect').value='';el('pairSelect').value='';
+ el('nePrefix').checked=false;
+ el('excSelect').classList.add('hidden');el('excInfo').textContent='';
+ syncAspect();fillPrefixes();fillDep();
+ var e=document.getElementsByName('excOn');e[0].checked=true;
+ var p=document.getElementsByName('pairSide');p[0].checked=true;
+ paintRadio();applyLevel();idleFilters();
+ el('resWord').innerHTML='—';el('resType').innerHTML='Выбери глагол в поле 1, чтобы начать';
+ comment('info','Параметры сброшены. Достигнутый уровень сохранён.');
+}
+init();applyLevel();drawLevels();
+</script>
+</body>
+</html>
